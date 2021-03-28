@@ -19,14 +19,7 @@ package com.dkit.oop.sd2.BusinessObjects;
 
 
 
-import com.dkit.oop.sd2.DAOs.MySqlStudentDao;
-import com.dkit.oop.sd2.DAOs.MySqlUserDao;
-import com.dkit.oop.sd2.DAOs.StudentDaoInterface;
-import com.dkit.oop.sd2.DAOs.UserDaoInterface;
 import com.dkit.oop.sd2.DTOs.Student;
-import com.dkit.oop.sd2.DTOs.User;
-import com.dkit.oop.sd2.Exceptions.DaoException;
-import java.util.List;
 
 
 public class App
@@ -42,7 +35,7 @@ public class App
         int caoNumber = 87654321;// get from user input
         String dob = "1999-11-26";
         String pw = "dfghjk";
-        studentManager.addStudent(new Student(caoNumber, dob, pw));
+        studentManager.addStudent(new Student(courseId, caoNumber, dob, pw));
         s = studentManager.getStudent(87654321);
         System.out.println(s);
 
