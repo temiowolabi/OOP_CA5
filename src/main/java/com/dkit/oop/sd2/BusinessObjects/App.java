@@ -19,77 +19,112 @@ package com.dkit.oop.sd2.BusinessObjects;
 
 
 
-import com.dkit.oop.sd2.DTOs.Student;
+import com.dkit.oop.sd2.Exceptions.DaoException;
+import com.dkit.oop.sd2.Menus.CAOCourseMenu;
+import com.dkit.oop.sd2.Menus.MainMenu;
+import com.dkit.oop.sd2.Server.MySqlStudentDao;
+
+import java.util.Scanner;
 
 
-public class App
-{
+public class App {
+    private Scanner keyboard = new Scanner(System.in);
 
-    public static void main(String[] args)
+    public static void main(String[] args) {
+        new App().start();
+    }
+
+    private void start() {
+        doMainMenuLoop();
+    }
+    public void doMainMenuLoop()
     {
 
-        StudentManager studentManager = new StudentManager();
+        try {
 
-        Student s = studentManager.getStudent(12345678);
+            boolean loop = true;
+            MainMenu choice;
+            int getChoice;
+            while (loop) {
+                displayMainMenu();
+                getChoice = keyboard.nextInt();
+                keyboard.nextLine();
+                choice = MainMenu.values()[getChoice];
+                switch (choice) {
+                    case QUIT_APPLICATION:
+                        loop = false;
+                        break;
+                    case REGISTER:
+                        register();
+                        break;
+                    case LOGIN:
+                        login();
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        int caoNumber = 87654321;// get from user input
-        String dob = "1999-11-26";
-        String pw = "dfghjk";
-        studentManager.addStudent(new Student(courseId, caoNumber, dob, pw));
-        s = studentManager.getStudent(87654321);
-        System.out.println(s);
+    }
+
+    private void login() throws DaoException {
+        System.out.println("Login: ");
+
+        System.out.println("Enter CAO Number:\t");
+        int caoNumber = keyboard.nextInt();
+        System.out.println("Enter Password:\t");
+        String password = keyboard.next();
+        MySqlStudentDao login = new MySqlStudentDao();
+        String result2 = login.login(caoNumber, password);
+        System.out.println(result2);
+    }
+
+    public void register() throws DaoException {
+        System.out.println("");
+        System.out.println("Enter CAO Number:");
+        int caoNumber = keyboard.nextInt();
+        System.out.println("Enter Date of Birth:");
+        String dateOfBirth = keyboard.next();
+        System.out.println("Enter Password:");
+        String password = keyboard.next();
+        MySqlStudentDao register = new MySqlStudentDao();
+        String result1 = register.register(caoNumber, dateOfBirth, password);
+        System.out.println(result1);
+    }
+
+    private void displayMainMenu()
+    {
+        System.out.println("\n Options to select:");
+        for(int i=0; i < MainMenu.values().length;i++)
+        {
+            System.out.println("\t"  + i + ". " + MainMenu.values()[i].toString());
+        }
+        System.out.print("Enter a number to select option (enter 0 to quit):>");
+    }
+
+    private void printCaoCourseMenu()
+    {
+        System.out.println("CAO Course Menu.");
+        System.out.println("\n Select One The Following Options: ");
+        for(int i = 0; i < CAOCourseMenu.values().length; i++)
+        {
+            System.out.println("\t" + i + ". " + CAOCourseMenu.values()[i].toString());
+        }
+        System.out.print("Enter a number to select option (enter 0 to quit):>");
+    }
+
+//        StudentManager studentManager = new StudentManager();
+//
+//        Student s = studentManager.getStudent(12345678);
+//
+//        int caoNumber = 87654321;// get from user input
+//        String dob = "1999-11-26";
+//        String pw = "dfghjk";
+//        studentManager.addStudent(new Student(courseId, caoNumber, dob, pw));
+//        s = studentManager.getStudent(87654321);
+//        System.out.println(s);
 
 
 
-
-//        UserDaoInterface IUserDao = new MySqlUserDao();  //"IUse..." -> "I" for Interface
-////        // Notice that the userDao reference is an Interface type.
-////        // This allows for the use of different concrete implementations.
-////        // e.g. we could replace the MySqlUserDao with an OracleUserDao
-////        // (accessing an Oracle Database)
-////        // without changing anything in the Interface.
-////        // If the Interface doesn't change, then none of the
-////        // code below that uses the interface needs to change.
-////        // The 'contract' defined by the interface will not be broken.
-////        // This means that this code is independent of the code
-////        // used to access the database. (Reduced coupling).
-////
-////        // The Business Objects require that all User DAOs implement
-////        // the interface called "UserDaoInterface", as the code uses
-////        // only references of the interface type to access the DAO methods.
-//        try
-//        {
-//            System.out.println("\nCall findAllUsers()");
-//            List<User> users = IUserDao.findAllUsers();
-//
-//            if( users.isEmpty() )
-//                System.out.println("There are no Users");
-//
-//            for( User user : users )
-//                System.out.println("User: " + user.toString());
-//
-//            // test dao - with good username and password
-//            System.out.println("\nCall: findUserByUsernamePassword()");
-//            User user = IUserDao.findUserByUsernamePassword("smithj", "password");
-//            if(user != null)
-//                System.out.println("User found: " + user);
-//            else
-//                System.out.println("Username with that password not found");
-//
-//            // test dao - with bad username
-//            user = IUserDao.findUserByUsernamePassword("madmax", "thunderdome");
-//            if(user != null)
-//                System.out.println("User found: " + user);
-//            else
-//                System.out.println("Username with that password not found");
-//
-//        }
-//        catch( DaoException e )
-//        {
-//            e.printStackTrace();
-//        }
-//
-//
-//
-   }
 }

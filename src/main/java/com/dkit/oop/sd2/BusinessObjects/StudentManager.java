@@ -1,7 +1,7 @@
 //package com.dkit.oop.sd2.BusinessObjects;
 //
-//import com.dkit.oop.sd2.DAOs.MySqlStudentDao;
-//import com.dkit.oop.sd2.DAOs.StudentDaoInterface;
+//import com.dkit.oop.sd2.Server.MySqlStudentDao;
+//import com.dkit.oop.sd2.Server.StudentDaoInterface;
 //import com.dkit.oop.sd2.DTOs.Student;
 //import com.dkit.oop.sd2.Exceptions.DaoException;
 //

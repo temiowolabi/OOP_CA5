@@ -1,6 +1,6 @@
-package com.dkit.oop.sd2.DAOs;
+package com.dkit.oop.sd2.Server;
 
-import com.dkit.oop.sd2.DTOs.Student;
+import com.dkit.oop.sd2.DTOs.Course;
 import com.dkit.oop.sd2.Exceptions.DaoException;
 
 import java.sql.Connection;
@@ -10,37 +10,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySqlStudentDao extends MySqlDao implements StudentDaoInterface{
-
+public class MySqlCourseDao extends MySqlDao implements CourseDaoInterface {
     @Override
-    public List<Student> findAllStudents() throws DaoException
+    public List<Course> findAllCourses() throws DaoException
     {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Student> students = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
 
         try
         {
             //Get connection object using the methods in the super class (MySqlDao.java)...
             con = this.getConnection();
 
-            String query = "SELECT * FROM STUDENT";
+            String query = "SELECT * FROM COURSE";
             ps = con.prepareStatement(query);
 
             //Using a PreparedStatement to execute SQL...
             rs = ps.executeQuery();
             while (rs.next())
             {
-                int caoNumber = rs.getInt("caonumber");
-                String dateOfBirth = rs.getString("dob");
-                String password = rs.getString("password");
-                Student s = new Student(caoNumber, dateOfBirth, password);
-                students.add(s);
+                String courseId = rs.getString("courseId");
+                String title = rs.getString("title");
+                int level = rs.getInt("level");
+                String institution = rs.getString("institution");
+                Course c = new Course(courseId, level, title, institution);
+                courses.add(c);
             }
         } catch (SQLException e)
         {
-            throw new DaoException("findAllStudents() " + e.getMessage());
+            throw new DaoException("findAllCourses() " + e.getMessage());
         } finally
         {
             try
@@ -59,39 +59,39 @@ public class MySqlStudentDao extends MySqlDao implements StudentDaoInterface{
                 }
             } catch (SQLException e)
             {
-                throw new DaoException("findAllStudents() " + e.getMessage());
+                throw new DaoException("findAllCourses() " + e.getMessage());
             }
         }
-        return students;     // may be empty
+        return courses;     // may be empty
     }
 
     @Override
-    public Student findStudentByCaoNumberPassword(int caoNumber, String password) throws DaoException
+    public Course findCoursesByCourseID(String courseId) throws DaoException
     {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Student s = null;
+        Course c = null;
         try
         {
             con = this.getConnection();
 
-            String query = "SELECT * FROM STUDENT WHERE CAONUMBER = ? AND PASSWORD = ?";
+            String query = "SELECT * FROM COURSE WHERE COURSEID = ?";
             ps = con.prepareStatement(query);
-            ps.setInt(1, caoNumber);
-            ps.setString(2, password);
+            ps.setString(1, courseId);
 
             rs = ps.executeQuery();
             if (rs.next())
             {
-                int cao_number = rs.getInt("CAO_NUMBER");
-                String dateOfBirth = rs.getString("DATE_OF_BIRTH");
-                String pword = rs.getString("PASSWORD");
-                s = new Student(cao_number, dateOfBirth, pword);
+                String courseID = rs.getString("COURSE_ID");
+                int level = rs.getInt("LEVEL");
+                String institution = rs.getString("INSTITUTION");
+                String title = rs.getString("TITLE");
+                c = new Course(courseID, level, institution, title);
             }
         } catch (SQLException e)
         {
-            throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
+            throw new DaoException("findCoursesByCourseID() " + e.getMessage());
         } finally
         {
             try
@@ -110,10 +110,9 @@ public class MySqlStudentDao extends MySqlDao implements StudentDaoInterface{
                 }
             } catch (SQLException e)
             {
-                throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
+                throw new DaoException("findCoursesByCourseID() " + e.getMessage());
             }
         }
-        return s;     // u may be null
+        return c;     // u may be null
     }
-
 }

@@ -10,7 +10,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class Client {
+/*This class prints out the menu.*/
+
+public class Client{
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
 
@@ -39,6 +41,7 @@ public class Client {
                         sendMessage = false;
                         break;
                     case REGISTER:
+                        message = "Register";
                         break;
                     case LOGIN:
                         break;

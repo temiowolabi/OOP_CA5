@@ -1,4 +1,4 @@
-package com.dkit.oop.sd2.DAOs;
+package com.dkit.oop.sd2.Server;
 
 /** OOP 2021
  * UserDaoInterface

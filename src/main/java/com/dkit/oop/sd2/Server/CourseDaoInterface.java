@@ -1,4 +1,4 @@
-package com.dkit.oop.sd2.DAOs;
+package com.dkit.oop.sd2.Server;
 
 import com.dkit.oop.sd2.DTOs.Course;
 import com.dkit.oop.sd2.Exceptions.DaoException;
