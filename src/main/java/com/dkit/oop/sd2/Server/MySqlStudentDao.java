@@ -1,5 +1,6 @@
 package com.dkit.oop.sd2.Server;
 
+import com.dkit.oop.sd2.Core.CAOService;
 import com.dkit.oop.sd2.DTOs.Student;
 import com.dkit.oop.sd2.Exceptions.DaoException;
 
@@ -107,14 +108,14 @@ public class MySqlStudentDao extends MySqlDao implements StudentDaoInterface {
             if (count==0){
                 int result = ps.executeUpdate();
                 if (result==1){
-                    output = "You are Successfully Registered.";
+                    output = CAOService.SUCCESSFUL_REGISTER;
                 }
                 else{
-                    output = "Your Registration Failed.";
+                    output = CAOService.FAILED_REGISTER;
                 }
             }
             else{
-                output= "CAO Numer is Already Registered.";
+                output= "CAO Number is Already Registered.";
             }
         } catch (SQLException e)
         {
@@ -144,9 +145,9 @@ public class MySqlStudentDao extends MySqlDao implements StudentDaoInterface {
     }
 
     @Override
-    public String login(int caoNumber, String password) throws DaoException
+    public boolean login(int caoNumber, String password) throws DaoException
     {
-        String output;
+        boolean output;
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -165,10 +166,10 @@ public class MySqlStudentDao extends MySqlDao implements StudentDaoInterface {
                 count = count+1;
             }
             if (count>0){
-                output = "You are logged in.";
+                output = true;
             }
             else{
-                output = "Login Failed.";
+                output = false;
             }
         } catch (SQLException e)
         {

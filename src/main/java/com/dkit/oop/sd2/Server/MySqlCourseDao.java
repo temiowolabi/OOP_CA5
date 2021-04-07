@@ -8,11 +8,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MySqlCourseDao extends MySqlDao implements CourseDaoInterface {
+
+    private Map<String, Course> courses = new HashMap<>();
+
+    public Map<String, Course> getCoursesMap()
+    {
+        return new HashMap<String, Course>(this.courses);
+    }
+
+
     @Override
-    public List<Course> findAllCourses() throws DaoException
+    public List<Course> displayAllCourses() throws DaoException
     {
         Connection con = null;
         PreparedStatement ps = null;
@@ -88,6 +99,7 @@ public class MySqlCourseDao extends MySqlDao implements CourseDaoInterface {
                 String institution = rs.getString("INSTITUTION");
                 String title = rs.getString("TITLE");
                 c = new Course(courseID, level, institution, title);
+                System.out.println(c.toString());
             }
         } catch (SQLException e)
         {

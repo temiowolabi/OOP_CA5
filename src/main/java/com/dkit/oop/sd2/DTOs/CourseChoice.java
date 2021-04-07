@@ -1,55 +1,68 @@
 package com.dkit.oop.sd2.DTOs;
 
+import com.dkit.oop.sd2.Server.MySqlCourseDao;
+import com.dkit.oop.sd2.Server.MySqlStudentDao;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CourseChoice {
-//
-//        // reference to constructor injected studentManager
-//        private StudentManager studentManager;
-//
-//        // reference to constructor injected courseManager
-//        private CourseManager courseManager;
-//
-//        // Store all the Course details -  fast access
-//
-//        // caoNumber, course selection list - for fast access
-//        HashMap<Integer, List<String>> selectedChoices = new HashMap<>();
-//
-//        // CourseChoicesManager DEPENDS on both the StudentManager and CourseManager to access
-//        // student details and course details.  So, we receive a reference to each via
-//        // the constructor.
-//        // This is called "Dependency Injection", meaning that we
-//        // inject (or pass in) objects that this class requires to do its job.
-//        //
-//        CourseChoicesManager(StudentManager studentManager, CourseManager courseManager) {
-//            this.studentManager = studentManager;
-//            this.courseManager = courseManager;
-//
-//        }
-//
-//        public Student getStudentDetails(int caoNumber) {
-//            return studentManager.getStudent(caoNumber);
-//        }
-//
-//        public Course getCourseDetails(String courseId) {
-//            return courseManager.getCourse(courseId);
-//        }
-//
-//        public List<String> getStudentChoices(int caoNumber) {
-//            return selectedChoices.get(caoNumber);
-//        }
-//
-//        public void updateChoices(int caoNumber, List<String> choices) {
-//            selectedChoices.put(caoNumber, choices);
-//        }
-//
-//        public HashMap<Integer, List<String>> getAllCourses() {
-//            return selectedChoices;
-//        }
-//
-//        public boolean login(int caoNumber, String dateOfBirth, String password) {
-//            return studentManager.isRegistered(caoNumber, dateOfBirth, password);
-//
-//        }
+
+    private MySqlStudentDao studentManager;
+
+    private MySqlCourseDao courseManager;
+
+    private Map <Integer, List<Course>> studentChoices = new HashMap<>();
+
+
+    public CourseChoice(MySqlStudentDao studentManager, MySqlCourseDao courseManager) {
+        this.studentManager = studentManager;
+        this.courseManager = courseManager;
+    }
+
+    public Map<Integer, List<Course>> getStudentChoicesMap()
+    {
+        return studentChoices;
+    }
+
+    public void setStudentChoices(Map<Integer, List<Course>> studentChoices)
+    {
+        this.studentChoices = studentChoices;
+    }
+
+    public MySqlStudentDao getStudentManager()
+    {
+        return studentManager;
+    }
+
+    public MySqlCourseDao getCourseManager()
+    {
+        return courseManager;
+    }
+
+    public void updateChoices(int caoNumber, List<String> choices)
+    {
+        ArrayList<Course> courseList = new ArrayList<>();
+
+        for(String courseId : choices)
+        {
+            Course course = courseManager.getCoursesMap().get(courseId);
+            courseList.add(course);
+        }
+
+        studentChoices.put(caoNumber, courseList);
+    }
+
+    public List<Course> getAllCourses()
+    {
+        ArrayList<Course> list = new ArrayList<>();
+        for(Map.Entry<String, Course> entry : this.courseManager.getCoursesMap().entrySet())
+        {
+            Course course = entry.getValue();
+            list.add(course);
+        }
+        return list;
+    }
 }

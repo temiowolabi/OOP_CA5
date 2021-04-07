@@ -19,12 +19,24 @@ package com.dkit.oop.sd2.BusinessObjects;
 
 
 
+import com.dkit.oop.sd2.DTOs.Course;
 import com.dkit.oop.sd2.Exceptions.DaoException;
 import com.dkit.oop.sd2.Menus.CAOCourseMenu;
 import com.dkit.oop.sd2.Menus.MainMenu;
+import com.dkit.oop.sd2.Server.MySqlCourseDao;
 import com.dkit.oop.sd2.Server.MySqlStudentDao;
 
+import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+
+/*
+
+13579113
+123ZXC
+ */
+
 
 
 public class App {
@@ -33,6 +45,7 @@ public class App {
     public static void main(String[] args) {
         new App().start();
     }
+    private HashMap<String, Course> courseMap = new HashMap<>();
 
     private void start() {
         doMainMenuLoop();
@@ -68,6 +81,62 @@ public class App {
 
     }
 
+    private void doAdminMenuLoop(MySqlStudentDao loginResult)
+    {
+        boolean loop = true;
+        CAOCourseMenu menuOption;
+        int option;
+        while(loop)
+        {
+            printCaoCourseMenu();
+            try
+            {
+                option = keyboard.nextInt();
+                keyboard.nextLine();
+                menuOption = CAOCourseMenu.values()[option];
+                switch (menuOption)
+                {
+                    case QUIT_APPLICATION:
+                        loop = false;
+                        break;
+                    case LOGOUT:
+                        doMainMenuLoop();
+                        break;
+//                    case DISPLAY_COURSE:
+//                        getStudentDetails(ccMgr);
+//                        break;
+//                    case DISPLAY_ALL_COURSES:
+//                        displayAllCourses();
+//                        break;
+//                    case DISPLAY_CURRENT_CHOICES:
+//                        addStudent(studentManager);
+//                        break;
+//                    case UPDATE_CURRENT_CHOICES:
+//                        removeStudent(studentManager);
+//                        break;
+                }
+            }
+            catch (InputMismatchException ime)
+            {
+                System.out.println("InputMismatchException. The token retrieved does not match the pattern for the expected type. Please enter a valid option");
+                keyboard.nextLine();
+            }
+            catch (ArrayIndexOutOfBoundsException e)
+            {
+                System.out.println("ArrayIndexOutOfBoundsException. The index is either negative or greater than or equal to the size of the array.");
+                keyboard.nextLine();
+            }
+            catch (IllegalArgumentException e)
+            {
+                System.out.println("IllegalArgumentException. A method has been passed an illegal argument. Try again");
+                keyboard.nextLine();
+            } 
+
+        }
+
+    }
+
+
     private void login() throws DaoException {
         System.out.println("Login: ");
 
@@ -76,8 +145,15 @@ public class App {
         System.out.println("Enter Password:\t");
         String password = keyboard.next();
         MySqlStudentDao login = new MySqlStudentDao();
-        String result2 = login.login(caoNumber, password);
-        System.out.println(result2);
+
+//        if(login.login(caoNumber, password))
+//        {
+//            doAdminMenuLoop(login);
+//        }
+//        String result2 = login.login(caoNumber, password);
+//        System.out.println(result2);
+
+
     }
 
     public void register() throws DaoException {

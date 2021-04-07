@@ -12,5 +12,5 @@ public interface StudentDaoInterface {
 
     public String register(int caoNumber, String dob, String password) throws DaoException;
 
-    public String login(int caoNumber, String password) throws DaoException;
+    public  boolean login(int caoNumber, String password) throws DaoException;
 }
